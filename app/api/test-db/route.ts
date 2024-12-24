@@ -1,11 +1,15 @@
-import { NextResponse } from 'next/server';
-import pool from '@/app/lib/db';
+import { generateStoicAdvice, analyzeJournalingTone } from "@/app/lib/gpt4";
+import { NextResponse } from "next/server";
 
-export async function GET() {
-    try {
-        const res = await pool.query('SELECT NOW()');
-        return NextResponse.json({ success: true, time: res.rows[0] });
-    } catch (err : any) {
-        return NextResponse.json({ success: false, error: err.message });
-    }
+export async function test_gpt() {
+    const prompt = "I don't know what the meaning of life is. I often find myself caring too much about material possessions that I forget about the people around me.";
+    const advice = await generateStoicAdvice(prompt);
+    console.log('Stoic advice:', advice);
+
+
+    const journalEntry = "IM IN LOVE WITH LIFE I LOVE I LOVE I LOVE LIFE";
+    const toneAnalysis = await analyzeJournalingTone(journalEntry);
+    console.log("Tone Analysis:", toneAnalysis);
 }
+
+test_gpt();
