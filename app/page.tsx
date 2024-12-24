@@ -8,15 +8,20 @@ interface Philosopher {
 }
 
 const philosophers: Philosopher[] = [
-  { id: 'marcus', name: 'Marcus Aurelius', description: 'Stoic Emperor' },
-  { id: 'nietzsche', name: 'Friedrich Nietzsche', description: 'Existentialist' },
-  { id: 'kant', name: 'Immanuel Kant', description: 'Enlightenment Thinker' },
-  { id: 'camus', name: 'Albert Camus', description: 'Absurdist' }
+  { id: 'Marcus', name: 'Marcus Aurelius', description: 'Stoic Emperor' },
+  { id: 'Nietzsche', name: 'Friedrich Nietzsche', description: 'Existentialist' },
+  { id: 'Kant', name: 'Immanuel Kant', description: 'Enlightenment Thinker' },
+  { id: 'Camus', name: 'Albert Camus', description: 'Absurdist' },
+  { id: 'Aristotle', name: 'Aristotle', description: 'Classical Greek' },
+  { id: 'Socrates', name: 'Socrates', description: 'Classical Greek' },
+  { id: 'Kierkegaard', name: 'Søren Kierkegaard', description: 'Existentialist' },
+  { id: 'Sartre', name: 'Jean-Paul Sartre', description: 'Existentialist' }
 ];
 
 export default function Home() {
   const [content, setContent] = useState('');
   const [result, setResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedPhilosopher, setSelectedPhilosopher] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,13 +30,13 @@ export default function Home() {
       alert('Please select a philosopher');
       return;
     }
-
+    setIsLoading(true);
     try {
       const response = await fetch('/api/journal', {
         method: 'POST',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           userId: 1,
           content,
@@ -42,6 +47,8 @@ export default function Home() {
       setResult(data);
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,7 +60,7 @@ export default function Home() {
             Your Journal Entry
           </label>
           <textarea
-            value={content}
+            value={content?content:"I want to kill myself."}
             onChange={(e) => setContent(e.target.value)}
             placeholder="What's on your mind?"
             className="w-full p-3 border rounded-lg shadow-sm"
@@ -92,14 +99,19 @@ export default function Home() {
         </button>
       </form>
 
-      {result && (
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h2 className="font-bold mb-2">
-            Advice from {philosophers.find(p => p.id === selectedPhilosopher)?.name}:
-          </h2>
-          <p className="text-gray-700">{result.entry?.analysis}</p>
-        </div>
-      )}
+      <div className="mt-4">
+        {isLoading ? (
+          <div className="flex items-center space-x-2 text-gray-600">
+            <div className="w-4 h-4 border-t-2 border-b-2 border-gray-600 rounded-full animate-spin"></div>
+            <p>Consulting with {selectedPhilosopher}...</p>
+          </div>
+        ) : result ? (
+          <div className="p-4 bg-gray-50 rounded">
+            <h2 className="font-bold mb-2">Advice from {result.philosopher}:</h2>
+            <p className="text-gray-700">{result.entry.analysis}</p>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

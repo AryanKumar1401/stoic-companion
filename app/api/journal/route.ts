@@ -20,7 +20,8 @@ export async function POST(request: Request) {
 
         return NextResponse.json({
             success: true,
-            entry: result.rows[0]
+            entry: result.rows[0],
+            philosopher: philosopher
         });
 
     } catch (error) {

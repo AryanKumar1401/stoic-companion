@@ -31,7 +31,7 @@ async function generateStoicAdvice(prompt: string): Promise<string> {
 async function analyzeJournalingTone(journalEntry: string): Promise<string> {
     try {
         const response = await openai.chat.completions.create({
-            model: "gpt-4o",
+            model: "gpt-3.5-turbo",
             messages: [
                 {
                     role: "system",
