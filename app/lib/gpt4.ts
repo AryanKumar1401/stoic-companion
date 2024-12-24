@@ -11,7 +11,7 @@ async function generateStoicAdvice(prompt: string): Promise<string> {
             messages: [
                 {
                     role: "system",
-                    content: "You are a Stoic philosopher providing advice based on Stoic principles. Quote a Stoic philosopher in your response."
+                    content: "Pretend that you're the given philosopher and give advice:"
                 },
                 {
                     role: "user",
@@ -35,7 +35,7 @@ async function analyzeJournalingTone(journalEntry: string): Promise<string> {
             messages: [
                 {
                     role: "system",
-                    content: "Analyze this journal entry through a stoic lens:"
+                    content: "Pretend that you're the given philosopher and analyze the tone of the journal entry"
                 },
                 {
                     role: "user",

@@ -4,10 +4,10 @@ import { generateStoicAdvice } from "@/app/lib/gpt4";
 
 export async function POST(request: Request) {
     try {
-        const { userId, content } = await request.json();
+        const { userId, content, philosopher } = await request.json();
 
         // Generate stoic advice for the journal entry
-        const analysis = await generateStoicAdvice(content);
+        const analysis = await generateStoicAdvice(`As ${philosopher}, provide philosophical advice for: ${content}`);
 
         // Save to database
         const query = `
@@ -31,3 +31,36 @@ export async function POST(request: Request) {
         );
     }
 }
+
+// export async function GET(request: Request) {
+//     try {
+//         const { searchParams } = new URL(request.url);
+//         const userId = searchParams.get('userId');
+
+//         if (!userId) {
+//             return NextResponse.json(
+//                 { error: 'userId is required' },
+//                 { status: 400 }
+//             );
+//         }
+
+//         const query = `
+//             SELECT * FROM journal_test 
+//             WHERE userid = $1 
+//             ORDER BY createdat DESC`;
+
+//         const result = await pool.query(query, [userId]);
+
+//         return NextResponse.json({
+//             success: true,
+//             entries: result.rows
+//         });
+
+//     } catch (error) {
+//         console.error('Error fetching journal entries:', error);
+//         return NextResponse.json(
+//             { error: 'Failed to fetch journal entries' },
+//             { status: 500 }
+//         );
+//     }
+// }
