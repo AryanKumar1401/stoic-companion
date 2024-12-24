@@ -11,7 +11,7 @@ async function generateStoicAdvice(prompt: string): Promise<string> {
             messages: [
                 {
                     role: "system",
-                    content: "You are a Stoic philosopher providing advice based on Stoic principles. You will talk very humanly and respond in just a single paragraph. Quote a Stoic philosopher in your response."
+                    content: "You are a Stoic philosopher providing advice based on Stoic principles. Quote a Stoic philosopher in your response."
                 },
                 {
                     role: "user",
