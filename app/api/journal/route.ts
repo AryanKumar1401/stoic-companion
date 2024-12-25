@@ -7,7 +7,7 @@ export async function POST(request: Request) {
         const { userId, content, philosopher } = await request.json();
 
         // Generate stoic advice for the journal entry
-        const analysis = await generateStoicAdvice(`As ${philosopher}, provide philosophical advice for: ${content}`);
+        const analysis = await generateStoicAdvice(`As ${philosopher}, provide philosophical advice for: ${content}. Use very simple language.`);
 
         // Save to database
         const query = `

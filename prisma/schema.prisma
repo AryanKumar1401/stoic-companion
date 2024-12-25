@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model journal_test {
+  id        Int       @default(autoincrement())
+  userid    Int
+  content   String
+  analysis  String?
+  createdat DateTime? @default(now()) @db.Timestamp(6)
+
+  @@ignore
+}
+
+/// This table has subclasses and requires additional setup for migrations. Visit https://pris.ly/d/table-inheritance for more info.
+model journalentries {
+  id        Int       @id @default(autoincrement())
+  userid    Int
+  content   String
+  analysis  String?
+  createdat DateTime? @default(now()) @db.Timestamp(6)
+  users     users     @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model quotes {
+  id        Int       @id @default(autoincrement())
+  text      String
+  author    String?   @db.VarChar(255)
+  createdat DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model users {
+  id             Int              @id @default(autoincrement())
+  username       String           @db.VarChar(255)
+  email          String           @unique @db.VarChar(255)
+  password_hash  String?          @db.VarChar(255)
+  currentstreak  Int?             @default(0)
+  lastentrydate  DateTime?        @db.Date
+  journalentries journalentries[]
+}
