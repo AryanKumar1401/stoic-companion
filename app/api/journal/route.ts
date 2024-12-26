@@ -14,8 +14,13 @@ export async function POST(request: Request) {
             INSERT INTO journal_test (userid, content, analysis, createdat)
             VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
             RETURNING *`;
-
-        const values = [userId, content, analysis];
+        var values;
+        if (userId) {
+            values = [userId, content, analysis];
+        }
+        else {
+            values = [1, content, analysis];
+        }
         const result = await pool.query(query, values);
 
         return NextResponse.json({
