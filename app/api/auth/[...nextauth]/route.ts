@@ -22,6 +22,7 @@ declare module "next-auth" {
 
 const handler = NextAuth({
     adapter: PrismaAdapter(prisma),
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: "credentials",
