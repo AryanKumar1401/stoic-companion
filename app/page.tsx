@@ -65,7 +65,7 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: session?.user.id, // Include user ID from session,
+          userId: session?.user.id ?? -1, // Include user ID from session,
           content,
           philosopher: selectedPhilosopher
         }),

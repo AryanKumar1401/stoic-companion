@@ -20,10 +20,12 @@ export default function journal() {
       });
       const data = await response.json();
       setResult(data);
+
     } catch (error) {
       console.error('Error:', error);
     }
   };
+ 
 
   return (
     <main className="p-4">

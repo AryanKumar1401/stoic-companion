@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
         // Save to database
         const query = `
-            INSERT INTO journal_test (userid, content, analysis, createdat)
+            INSERT INTO journalentries (userid, content, analysis, createdat)
             VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
             RETURNING *`;
         var values;
