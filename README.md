@@ -32,9 +32,9 @@ Access it at [stoic-companion.vercel.app](https://stoic-companion.vercel.app/)!
 
 ## 📦 Deployment
 
-Deploy **Stoic Companion** using any platform that supports Node.js and PostgreSQL. Example platforms:
+I deployed **Stoic Companion** using the following platforms:
 - [Vercel](https://vercel.com/) for frontend hosting.
-- [AWS RDS](https://aws.amazon.com/rds/) or [Supabase](https://supabase.io/) for PostgreSQL.
+- [AWS RDS](https://aws.amazon.com/rds/) for PostgreSQL database.
 
 ---
 
