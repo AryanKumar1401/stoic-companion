@@ -11,7 +11,7 @@ interface Entry {
 }
 
 interface PastEntriesProps {
-    userId: number;
+    userId: string;
 
 }
 

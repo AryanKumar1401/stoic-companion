@@ -34,14 +34,14 @@ export default function Home() {
       analysis: string;
     };
   }
-  const { data: testSession, status } = useSession();
+  const { data: session, status } = useSession();
   const [result, setResult] = useState<JournalResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPhilosopher, setSelectedPhilosopher] = useState<string | null>(null);
   const [dailyQuote, setDailyQuote] = useState<Quote | null>(null);
   const [activeTab, setActiveTab] = useState<'journal' | 'entries'>('journal');
   const resultRef = useRef<HTMLDivElement>(null);
-  const session = {
+  const testSession = {
     user: {
       id: -1,
       name: "Test User",
