@@ -11,12 +11,12 @@ export async function POST(request: Request) {
 
         // Save to database
         const query = `
-            INSERT INTO journalentries (userid, content, analysis, createdat)
-            VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
+            INSERT INTO journalentries (userid, content, analysis, createdat,philosopher)
+            VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4)
             RETURNING *`;
         var values;
         if (userId) {
-            values = [userId, content, analysis];
+            values = [userId, content, analysis, philosopher];
         }
         else {
             values = [1, content, analysis];
