@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
-
+import QuoteCard from './components/quoteCard';
 
 interface Philosopher {
   id: string;
@@ -80,111 +80,107 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6" suppressHydrationWarning>
-      {/* Auth buttons */}
-      <div className="absolute top-4 right-4 flex gap-4 items-center">
-        {session ? (
-          <>
-            <span className="text-gray-600">
-              Logged in as {session.user?.name || session.user?.email}
-            </span>
-            <button
-              onClick={() => signOut()}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-            >
-              Sign Out
-            </button>
-          </>
-        ) : (
-          <>
-            <a
-              href="/signin"
-              className="px-4 py-2 text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Sign in
-            </a>
-            <a
-              href="/signup"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Sign up
-            </a>
-          </>
-        )}
-      </div>
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">
-          Your Quote of the Day
-        </h2>
-        {dailyQuote ? (
-          <div className="p-6 bg-gray-50 rounded-lg border border-gray-200">
-            <blockquote className="text-lg italic mb-2">
-              "{dailyQuote.text}"
-            </blockquote>
-            <p className="text-right text-gray-600">— {dailyQuote.author}</p>
-          </div>
-        ) : (
-          <div className="animate-pulse h-24 bg-gray-100 rounded-lg" />
-        )}
-      </div>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Your Journal Entry
-          </label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="What's on your mind?"
-            className="w-full p-3 border rounded-lg shadow-sm"
-            rows={6}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Choose Your Philosopher
-          </label>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            {philosophers.map((philosopher) => (
-              <button
-                key={philosopher.id}
-                type="button"
-                onClick={() => setSelectedPhilosopher(philosopher.id)}
-                className={`p-3 border rounded-lg text-sm ${selectedPhilosopher === philosopher.id
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white hover:bg-gray-50'
-                  }`}
-              >
-                <div className="font-medium">{philosopher.name}</div>
-                <div className="text-xs">{philosopher.description}</div>
-              </button>
-            ))}
+    <main className="min-h-screen bg-gradient-radial">
+      {/* Auth Header */}
+      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-sm border-b z-50">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+          <h1 className="text-xl font-semibold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+            Stoic Companion
+          </h1>
+          <div className="flex gap-4 items-center">
+            {session ? (
+              <>
+                <span className="text-sm text-gray-600">
+                  {session.user?.name || session.user?.email}
+                </span>
+                <button
+                  onClick={() => signOut()}
+                  className="px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-full transition-colors"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <a href="/signin" className="text-sm text-gray-600 hover:text-gray-900">
+                  Sign in
+                </a>
+                <a href="/signup" className="px-4 py-2 text-sm bg-black text-white rounded-full hover:bg-gray-800">
+                  Sign up
+                </a>
+              </>
+            )}
           </div>
         </div>
+      </nav>
 
-        <button
-          type="submit"
-          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          disabled={!selectedPhilosopher}
-        >
-          Get Philosophical Advice
-        </button>
-      </form>
+      <div className="max-w-4xl mx-auto px-4 pt-24 pb-12">
+        {/* Quote Section */}
+        <div className="mb-8">
+          <h2 className="text-lg font-medium text-gray-700 mb-4 flex items-center">
+            Your Quote of the Day
+          </h2>
+          <QuoteCard dailyQuote={dailyQuote} />
+        </div>
 
-      <div className="mt-4">
-        {isLoading ? (
-          <div className="flex items-center space-x-2 text-gray-600">
-            <div className="w-4 h-4 border-t-2 border-b-2 border-gray-600 rounded-full animate-spin"></div>
-            <p>Consulting with {selectedPhilosopher}...</p>
+        {/* Journal Form */}
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-4">
+            <label className="block text-lg font-medium text-gray-700">
+              Share your thoughts
+            </label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="What's on your mind today?"
+              className="w-full p-4 bg-white border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+              rows={6}
+            />
           </div>
-        ) : result ? (
-          <div className="p-4 bg-gray-50 rounded">
-            <h2 className="font-bold mb-2">Advice from {result.philosopher}:</h2>
-            <p className="text-gray-700">{result.entry.analysis}</p>
+
+          <div className="space-y-4">
+            <label className="block text-lg font-medium text-gray-700">
+              Choose your philosophical guide
+            </label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {philosophers.map((philosopher) => (
+                <button
+                  key={philosopher.id}
+                  type="button"
+                  onClick={() => setSelectedPhilosopher(philosopher.id)}
+                  className={`p-4 rounded-xl border transition-all duration-200 ${selectedPhilosopher === philosopher.id
+                    ? 'bg-black text-white border-black shadow-lg scale-105'
+                    : 'bg-white hover:border-gray-300 hover:shadow-md'
+                    }`}
+                >
+                  <div className="font-medium">{philosopher.name}</div>
+                  <div className="text-xs opacity-75">{philosopher.description}</div>
+                </button>
+              ))}
+            </div>
           </div>
-        ) : null}
+
+          <button
+            type="submit"
+            disabled={!selectedPhilosopher || isLoading}
+            className="w-full py-4 bg-black text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {isLoading ? 'Consulting...' : 'Get Philosophical Insight'}
+          </button>
+        </form>
+
+        {/* Results Section */}
+        {result && (
+          <div className="mt-8 p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl border shadow-sm">
+            <h2 className="text-xl font-medium mb-4">
+              Wisdom from {result.philosopher}
+            </h2>
+            <p className="text-gray-700 leading-relaxed">
+              {result.entry.analysis}
+            </p>
+          </div>
+        )}
       </div>
-    </div>
+    </main>
   );
 }
