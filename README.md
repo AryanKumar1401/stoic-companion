@@ -17,7 +17,7 @@ Access it at [stoic-companion.vercel.app](https://stoic-companion.vercel.app/)!
 ## 🚀 Technologies Used
 
 - **Frontend**: [Next.js](https://nextjs.org/) – Fast, modern React-based framework.
-- **Backend**: GPT-4 integration for personalized reflections.
+- **Backend**: GPT-4 integration for personalized reflections with Next API routes.
 - **Database**: [PostgreSQL](https://www.postgresql.org/) – Reliable and robust relational database.
 - **Styling**: CSS modules or Tailwind CSS for clean, responsive design.
 

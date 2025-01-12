@@ -34,14 +34,14 @@ export default function Home() {
       analysis: string;
     };
   }
-  const { data: session, status } = useSession();
+  const { data: testSession, status } = useSession();
   const [result, setResult] = useState<JournalResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPhilosopher, setSelectedPhilosopher] = useState<string | null>(null);
   const [dailyQuote, setDailyQuote] = useState<Quote | null>(null);
-  const [activeTab, setActiveTab] = useState<'journal' | 'entries'>('journal');
+  const [activeTab, setActiveTab] = useState<'journal' | 'entries' | 'forum'>('journal');
   const resultRef = useRef<HTMLDivElement>(null);
-  const testSession = {
+  const session = {
     user: {
       id: -1,
       name: "Test User",
@@ -149,6 +149,12 @@ export default function Home() {
               >
                 Past Entries
               </button>
+              <a
+                href="/forum"
+                className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 border-transparent text-gray-500 hover:text-gray-700`}
+              >
+                Forum
+              </a>
             </div>
           )}
         </div>
