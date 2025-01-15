@@ -52,7 +52,6 @@ export default function ForumPage() {
         createdAt: '2024-01-20T12:00:00Z',
         commentCount: 5
       },
-      // Add more mock threads...
     ]);
   }, []);
 
