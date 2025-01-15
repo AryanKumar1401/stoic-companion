@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface Thread {
   id: string;
@@ -72,6 +73,15 @@ export default function ForumPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-4xl mx-auto px-4 py-8">
+        <Link href="/" className="inline-block mb-6 text-gray-600 hover:text-gray-900">
+          <span className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+            </svg>
+            Back to Home
+          </span>
+        </Link>
+
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Philosophy Forum</h1>
           <button
@@ -184,8 +194,10 @@ export default function ForumPage() {
                   <span>{thread.commentCount} comments</span>
                 </div>
               </div>
+
             ))
           )}
+          (Still in the works!)
         </div>
       </div>
     </div>
