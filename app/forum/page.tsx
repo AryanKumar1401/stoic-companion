@@ -33,12 +33,12 @@ export default function ForumPage() {
   const [newComment, setNewComment] = useState('');
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   
-  const session = {
-    user: {
-      id: "1",
-      name: "Test User"
-    }
-  };
+  // const session = {
+  //   user: {
+  //     id: "1",
+  //     name: "Test User"
+  //   }
+  // };
 
   useEffect(() => {
     // Mock data - replace with actual API call

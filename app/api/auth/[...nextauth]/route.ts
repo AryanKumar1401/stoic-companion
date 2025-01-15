@@ -1,8 +1,8 @@
-import { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth from 'next-auth';
+import { AuthOptions } from 'next-auth';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from '@/lib/prisma';
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 declare module "next-auth" {
@@ -13,16 +13,14 @@ declare module "next-auth" {
     interface Session {
         user: {
             id: string;
-            name?: string | null;
-            email?: string | null;
-            image?: string | null;
-        };
+            email: string;
+            name?: string;
+        }
     }
 }
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
-    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: "credentials",
@@ -72,22 +70,32 @@ const handler = NextAuth({
         })
     ],
     callbacks: {
-        session: async ({ session, token }) => {
-            if (token?.sub) {
-                session.user = {
-                    ...session.user,
-                    id: token.sub // Add the user ID to the session
-                };
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+                token.name = user.name;
+            }
+            return token;
+        },
+        session: async ({ session, token }: { session: any, token: any }) => {
+            if (session?.user) {
+                session.user.id = token.id as string;
+                session.user.email = token.email as string;
+                session.user.name = token.name as string;
             }
             return session;
-        }
+        },
     },
+    secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt"
     },
     pages: {
         signIn: "/signin"
-    }
-});
+    },
+    debug: process.env.NODE_ENV === 'development',
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
